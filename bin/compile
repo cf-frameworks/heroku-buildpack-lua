@@ -17,6 +17,7 @@ function indent() {
 
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 OPT_DIR=$(cd "$BIN_DIR/../opt"; pwd)
+READLINE_DIR=$(cd "$OPT_DIR/.."; pwd)
 
 LUA=lua
 
@@ -24,6 +25,15 @@ cd $BUILD_DIR
 
 mkdir -p bin
 mkdir -p packages
+
+echo "-----> Installing readline"
+curl http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz -O
+tar zxf readline-6.2.tar.gz
+pushd readline-6.2
+./configure --prefix=$READLINE_DIR
+make
+make install
+popd
 
 echo "-----> Copying lua to bin"
 cp "$OPT_DIR/lua" "bin/"
